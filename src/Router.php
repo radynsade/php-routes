@@ -94,6 +94,11 @@ final class Router {
 			return;
 		}
 
+		/**
+		 * @var string[]
+		 */
+		$parametersAdded = [];
+
 		for ($i = 0; $i < $patternLength; $i++) {
 			$pathPart = array_shift(self::$stream);
 
@@ -107,6 +112,7 @@ final class Router {
 			if (str_starts_with($patternPart, '$')) {
 				$parameterName = substr($patternPart, 1);
 				self::$parameters[$parameterName] = $pathPart;
+				$parametersAdded[] = $parameterName;
 				continue;
 			}
 
@@ -114,8 +120,8 @@ final class Router {
 				$parts = array_splice(self::$handled, -$i, $i);
 				array_unshift(self::$stream, ...$parts);
 
-				foreach (self::$parameters as $key => $_) {
-					unset(self::$parameters[$key]);
+				foreach ($parametersAdded as $parameter) {
+					unset(self::$parameters[$parameter]);
 				}
 
 				return;
