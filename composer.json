@@ -5,11 +5,13 @@
     "license": "MIT",
     "version": "1.0.0",
     "autoload": {
-        "files": ["routes.php"]
+        "psr-4": {
+            "Radynsade\\Routes\\": "src/"
+        }
     },
     "authors": [
         {
-            "name": "Bobby Benson",
+            "name": "Nikita Prokopenko",
             "email": "radynje@gmail.com"
         }
     ],

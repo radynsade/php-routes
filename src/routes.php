@@ -24,7 +24,9 @@
  * IN THE SOFTWARE. 
  */
 
-final class Routes {
+namespace Radynsade\Routes;
+
+final class Router {
 	/**
 	 * @var string
 	 */
@@ -168,4 +170,4 @@ final class Routes {
 	}
 }
 
-Routes::init();
+Router::init();
