@@ -1,0 +1,17 @@
+{
+    "name": "radynsade/routes",
+    "description": "PHP routing library.",
+    "type": "library",
+    "license": "MIT",
+    "version": "1.0.0",
+    "autoload": {
+        "files": ["routes.php"]
+    },
+    "authors": [
+        {
+            "name": "Bobby Benson",
+            "email": "radynje@gmail.com"
+        }
+    ],
+    "require": {}
+}
