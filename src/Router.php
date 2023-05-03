@@ -26,7 +26,7 @@
 
 namespace Radynsade\Routes;
 
-final class Router {
+abstract class Router {
 	/**
 	 * @var string
 	 */
