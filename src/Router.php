@@ -33,6 +33,11 @@ final class Router {
 	private static string $entryPath;
 
 	/**
+	 * @var string
+	 */
+	private static string $requestMethod;
+
+	/**
 	 * @var string[]
 	 */
 	private static array $stream;
@@ -53,11 +58,20 @@ final class Router {
 	 */
 	public static function init(): void {
 		if (!isset(self::$entryPath)) {
-			self::$entryPath = rtrim(parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH), '/');
+			self::$entryPath = trim(
+				parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH),
+				'/'
+			);
 		}
 
 		if (!isset(self::$stream)) {
-			self::$stream = self::$entryPath === '' ? [] : explode('/', ltrim(self::$entryPath, '/'));
+			self::$stream = self::$entryPath === ''
+				? []
+				: explode('/', self::$entryPath);
+		}
+
+		if (!isset(self::$requestMethod)) {
+			self::$requestMethod = $_SERVER['REQUEST_METHOD'];
 		}
 	}
 
@@ -72,7 +86,7 @@ final class Router {
 		string $pattern,
 		string|callable ...$handlers
 	): void {
-		if ($method !== '*' && $method !== $_SERVER['REQUEST_METHOD']) {
+		if ($method !== '*' && $method !== self::$requestMethod) {
 			return;
 		}
 
@@ -81,7 +95,7 @@ final class Router {
 		if ($pattern === '') {
 			$patternParts = [];
 		} else {
-			$patternParts = explode('/', rtrim(ltrim($pattern, '/'), '/*'));
+			$patternParts = explode('/', rtrim(trim($pattern, '/'), '/*'));
 		}
 
 		$patternLength = count($patternParts);
@@ -101,12 +115,7 @@ final class Router {
 
 		for ($i = 0; $i < $patternLength; $i++) {
 			$pathPart = array_shift(self::$stream);
-
-			self::$handled = [
-				...self::$handled,
-				$pathPart
-			];
-
+			self::$handled[] = $pathPart;
 			$patternPart = $patternParts[$i];
 
 			if (str_starts_with($patternPart, '$')) {
@@ -135,43 +144,73 @@ final class Router {
 		exit();
 	}
 
-	public static function any(string $pattern, callable ...$handlers): void {
+	public static function any(
+		string $pattern,
+		string|callable ...$handlers
+	): void {
 		self::route('*', $pattern, ...$handlers);
 	}
 
-	public static function get(string $pattern, callable ...$handlers): void {
+	public static function get(
+		string $pattern,
+		string|callable ...$handlers
+	): void {
 		self::route('GET', $pattern, ...$handlers);
 	}
 
-	public static function head(string $pattern, callable ...$handlers): void {
+	public static function head(
+		string $pattern,
+		string|callable ...$handlers
+	): void {
 		self::route('HEAD', $pattern, ...$handlers);
 	}
 
-	public static function post(string $pattern, callable ...$handlers): void {
+	public static function post(
+		string $pattern,
+		string|callable ...$handlers
+	): void {
 		self::route('POST', $pattern, ...$handlers);
 	}
 
-	public static function put(string $pattern, callable ...$handlers): void {
+	public static function put(
+		string $pattern,
+		string|callable ...$handlers
+	): void {
 		self::route('PUT', $pattern, ...$handlers);
 	}
 
-	public static function delete(string $pattern, callable ...$handlers): void {
+	public static function delete(
+		string $pattern,
+		string|callable ...$handlers
+	): void {
 		self::route('DELETE', $pattern, ...$handlers);
 	}
 
-	public static function connect(string $pattern, callable ...$handlers): void {
+	public static function connect(
+		string $pattern,
+		string|callable ...$handlers
+	): void {
 		self::route('CONNECT', $pattern, ...$handlers);
 	}
 
-	public static function options(string $pattern, callable ...$handlers): void {
+	public static function options(
+		string $pattern,
+		string|callable ...$handlers
+	): void {
 		self::route('OPTIONS', $pattern, ...$handlers);
 	}
 
-	public static function trace(string $pattern, callable ...$handlers): void {
+	public static function trace(
+		string $pattern,
+		string|callable ...$handlers
+	): void {
 		self::route('TRACE', $pattern, ...$handlers);
 	}
 
-	public static function patch(string $pattern, callable ...$handlers): void {
+	public static function patch(
+		string $pattern,
+		string|callable ...$handlers
+	): void {
 		self::route('PATCH', $pattern, ...$handlers);
 	}
 }
