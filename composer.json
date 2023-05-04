@@ -1,11 +1,11 @@
 {
-    "name": "radynsade/routes",
+    "name": "radynsade/php-routes",
     "description": "PHP routing library.",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Radynsade\\Routes\\": "src/"
+            "Radynsade\\PhpRoutes\\": "src/"
         }
     },
     "authors": [

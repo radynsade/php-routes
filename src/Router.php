@@ -24,7 +24,7 @@
  * IN THE SOFTWARE. 
  */
 
-namespace Radynsade\Routes;
+namespace Radynsade\PhpRoutes;
 
 abstract class Router {
 	/**
@@ -126,7 +126,12 @@ abstract class Router {
 			}
 
 			if ($pathPart !== $patternPart) {
-				$parts = array_splice(self::$handled, -$i, $i);
+				$backToStream = $i + 1;
+				$parts = array_splice(
+					self::$handled,
+					-$backToStream,
+					$backToStream
+				);
 				array_unshift(self::$stream, ...$parts);
 
 				foreach ($parametersAdded as $parameter) {
