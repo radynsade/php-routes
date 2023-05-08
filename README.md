@@ -1,19 +1,27 @@
 # radynsade/routes
-Simple PHP router.
+Lightweight procedural routing  for PHP.
 
-**Usage:**
+## Usage
+Index page with manually specified method:
 ```
-// Manually specified method.
-// '*' method will match all.
 Router::route('GET', '', function (): void {
 	echo 'Home';
 });
-
-// With alias function and variables.
+```
+Will match all methods:
+```
+Router::route('*', '', function (): void {
+	echo 'Home';
+});
+```
+Alias method with variable in the path:
+```
 Router::get('test/$name', function (array $params): void {
 	echo 'Your name is ' . $params['name'];
 });
-
+```
+Nested routes:
+```
 Router::any('root/*', function (): void {
 	Router::get('nested', function () {
 		// Executed on /root/nested.
